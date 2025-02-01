@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../AlphaWeb/.idea/AlphaWeb.iml" filepath="$PROJECT_DIR$/../AlphaWeb/.idea/AlphaWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Quateria-master/.idea/Quateria.iml" filepath="$PROJECT_DIR$/../Quateria-master/.idea/Quateria.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../obsverver-core/.idea/obsverver-core.iml" filepath="$PROJECT_DIR$/../obsverver-core/.idea/obsverver-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../8QE1/.idea/qet.iml" filepath="$PROJECT_DIR$/../8QE1/.idea/qet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/watchtowerctl.iml" filepath="$PROJECT_DIR$/.idea/watchtowerctl.iml" />
+    </modules>
+  </component>
+</project>

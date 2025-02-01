@@ -1,0 +1,184 @@
+{
+  "project_info": {
+    "name": "service_manager",
+    "path": "/Users/xx-xx/PycharmProjects/watchtowerctl/service_manager",
+    "generated_at": "2025-01-31T03:07:17.986612",
+    "total_files": 9,
+    "total_size": 10765
+  },
+  "structure": {
+    "logging.py": {
+      "type": "file",
+      "info": {
+        "size": 0,
+        "last_modified": "2025-01-31T03:07:17.954336",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "encryption_service.py": {
+      "type": "file",
+      "info": {
+        "size": 569,
+        "last_modified": "2025-01-31T03:07:17.966438",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "config.py": {
+      "type": "file",
+      "info": {
+        "size": 525,
+        "last_modified": "2025-01-31T03:07:17.973932",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "constants.py": {
+      "type": "file",
+      "info": {
+        "size": 281,
+        "last_modified": "2025-01-31T03:07:17.976837",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "__init__.py": {
+      "type": "file",
+      "info": {
+        "size": 442,
+        "last_modified": "2025-01-31T03:07:17.979142",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "sandbox.py": {
+      "type": "file",
+      "info": {
+        "size": 0,
+        "last_modified": "2025-01-31T03:07:17.980829",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "exceptions.py": {
+      "type": "file",
+      "info": {
+        "size": 106,
+        "last_modified": "2025-01-31T03:07:17.981107",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "output_models.py": {
+      "type": "file",
+      "info": {
+        "size": 2826,
+        "last_modified": "2025-01-31T03:07:17.982894",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    "manager.py": {
+      "type": "file",
+      "info": {
+        "size": 6016,
+        "last_modified": "2025-01-31T03:07:17.984637",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "logging.py",
+      "content": "",
+      "info": {
+        "size": 0,
+        "last_modified": "2025-01-31T03:07:17.954336",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "encryption_service.py",
+      "content": "import os\nfrom cryptography.fernet import Fernet, InvalidToken\n\nclass EncryptionService:\n    def __init__(self, encryption_key: str):\n        self.key = Fernet(encryption_key)\n\n    def encrypt(self, data) -> str:\n        encrypted_data = self.key.encrypt(data.encode()).decode()\n        return encrypted_data\n\n    def decrypt(self, encrypted_data) -> str:\n        try:\n            decrypted_data = self.key.decrypt(encrypted_data.encode()).decode()\n            return decrypted_data\n        except InvalidToken:\n            raise ValueError(\"Invalid encryption token\")\n",
+      "info": {
+        "size": 569,
+        "last_modified": "2025-01-31T03:07:17.966438",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "config.py",
+      "content": "import configparser\n\ndef get_config():\n    config = configparser.ConfigParser()\n    config.read(\"service_manager/config.ini\")\n\n    milvus = MilvusConfig(\n        host=config.get(\"milvus\", \"host\"),\n        port=int(config.get(\"milvus\", \"port\")),\n        collection_name=config.get(\"milvus\", \"collection_name\"),\n        dim=int(config.get(\"milvus\", \"dim\"))\n    )\n\n    llm_model = config.get(\"llama_index\", \"model\")\n    embedder_model = config.get(\"sentence_transformers\", \"model\")\n\n    return milvus, llm_model, embedder_model\n",
+      "info": {
+        "size": 525,
+        "last_modified": "2025-01-31T03:07:17.973932",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "constants.py",
+      "content": "from dataclasses import dataclass\n\n@dataclass\nclass MilvusConfig:\n    host: str\n    port: int\n    collection_name: str\n    dim: int\n\nServiceMetadataFields = [\"label\", \"path\"]\nInvestigationArtifactTypes = [\"custom_instruction\"]\n\n@dataclass\nclass VectorDBConfig:\n    embeddings: str\n",
+      "info": {
+        "size": 281,
+        "last_modified": "2025-01-31T03:07:17.976837",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "__init__.py",
+      "content": "from .config import get_config\nfrom .constants import MilvusConfig, ServiceMetadataFields, InvestigationArtifactTypes, VectorDBConfig\nfrom .exceptions import ServiceManagerError\nfrom .manager import LaunchctlManager\nfrom .output_models import ServiceMetadata, InvestigationArtifact\nfrom .sandbox import Sandbox\nfrom .search import SearchManager\nfrom .utils import init_sentence_transformer_model\nfrom .vectordb_manager import VectorDBManager\n",
+      "info": {
+        "size": 442,
+        "last_modified": "2025-01-31T03:07:17.979142",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "sandbox.py",
+      "content": "",
+      "info": {
+        "size": 0,
+        "last_modified": "2025-01-31T03:07:17.980829",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "exceptions.py",
+      "content": "class ServiceManagerError(Exception):\n    \"\"\"Base exception class for service manager errors.\"\"\"\n    pass\n",
+      "info": {
+        "size": 106,
+        "last_modified": "2025-01-31T03:07:17.981107",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "output_models.py",
+      "content": "from typing import Any\n\nfrom pydantic import BaseModel\n\nclass ServiceMetadata(BaseModel):\n    label: str\n    path: str\n    dyld_dependencies: List[str] = []\n\nclass InvestigationArtifact(BaseModel):\n    artifact_type: str  # e.g., \"custom_instruction\"\n    data: Any  # The actual artifact data (e.g., instruction string for custom_instruction)\n\nfrom typing import List, Union\nfrom pydantic import BaseModel\n\nclass FDInfo(BaseModel):\n    fd: int\n    type: str\n    device: Union[str, None] = None\n    size: Union[int, None] = None\n    node: Union[str, None] = None\n    name: Union[str, None] = None\n\nclass NetworkConn(BaseModel):\n    command: str\n    pid: int\n    user: str\n    fd_info: List[FDInfo]\n    address: str\n    port: Union[str, None] = None\n    state: str\n\nclass ProcessDetails(BaseModel):\n    command: str\n    pid: int\n    user: str\n    fds: List[FDInfo]\n\ndef parse_lsof_output(lines: list) -> List[Union[NetworkConn, ProcessDetails]]:\n    result = []\n    for line in lines:\n        if \"COMMAND\" not in line and \"PID\" not in line:\n            fields = line.split()\n            if len(fields) >= 8:\n                fd_info = FDInfo(\n                    fd=int(fields[3]),\n                    type=fields[4],\n                    device=fields[5] if fields[5].isdigit() else None,\n                    size=int(fields[6]) if fields[6].isdigit() else None,\n                    node=fields[7],\n                    name=fields[8]\n                )\n\n                # Check if the line contains network connection details\n                if \":\" in fields[-1] and \"->\" not in fields[-2]:\n                    result.append(\n                        NetworkConn(\n                            command=fields[0],\n                            pid=int(fields[1]),\n                            user=fields[2],\n                            fd_info=[fd_info],\n                            address=fields[9].split(\":\")[0],\n                            port=fields[9].split(\":\")[-1] if \":\" in fields[9] else None,\n                            state=fields[-1]\n                        )\n                    )\n                else:\n                    result.append(\n                        ProcessDetails(\n                            command=fields[0],\n                            pid=int(fields[1]),\n                            user=fields[2],\n                            fds=[fd_info]\n                        )\n                    )\n\n    return result\n\n\n\n\nif __name__ == \"__main__\":\n\n\n    parsed_result = parse_lsof_output(output[2:])  # Skip the header line\n\n    for item in parsed_result:\n        if isinstance(item, NetworkConn):\n            print(f\"Network Connection: {item.command} ({item.pid}) - {item.address}:{item.port} ({item.state})\")\n        else:\n            print(f\"Process Detail: {item.command} ({item.pid}) - FDs: {item.fds}\")\n",
+      "info": {
+        "size": 2826,
+        "last_modified": "2025-01-31T03:07:17.982894",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    },
+    {
+      "path": "manager.py",
+      "content": "import os\nimport subprocess\nimport shutil\nimport logging\nimport logging.config\nimport time\nfrom typing import List, Dict, Any\nimport concurrent.futures\nfrom lxml import html\nfrom bs4 import BeautifulSoup\n\nfrom . import ServiceManagerError\n\n# Load logging configuration\nlogging.config.fileConfig(\"service_manager/logging.conf\", disable_existing_loggers=False)\nlogger = logging.getLogger(\"service_manager\")\n\nfrom .output_models import ServiceMetadata, InvestigationArtifact\nfrom sandbox import Sandbox\nfrom search import SearchManager\nfrom utils import init_sentence_transformer_model\nfrom vectordb_manager import VectorDBManager\n\nclass Service:\n    def __init__(self, label: str, pid: int, path: str):\n        self.label = label\n        self.pid = pid\n        self.path = path\n        self.is_malicious = False\n        self.metadata = None\n        self.embedding = None\n\n    def set_embedding(self, embedding: List[float]):\n        self.embedding = embedding\n\nclass LaunchctlManager:\n    def __init__(self, config: tuple):\n        self.milvus_config, self.llm_model, self.embedder_model, self.vectordb_embeddings = config\n        self.services: Dict[str, Service] = {}\n        self.vector_db_manager = VectorDBManager(self.vectordb_embeddings)\n        self.embedder = init_sentence_transformer_model(self.embedder_model)\n        self.man_page_retriever = ManPageRetriever(self.llm_model)\n        self.sandbox = Sandbox()\n        self.search_manager = SearchManager(self.vector_db_manager.memory)\n        self.load_services()\n\n    def _get_launchctl_list(self) -> List[str]:\n        try:\n            output = subprocess.check_output(\"launchctl list\", shell=True).decode().split(\"\\n\")[1:-1]\n            return [line.split()[0] for line in output]\n        except subprocess.CalledProcessError as e:\n            logger.error(f\"Failed to get launchctl list: {e}\")\n            raise ServiceManagerError(\"Failed to get launchctl list\") from e\n\n    def _get_service_path(self, label: str) -> str:\n        try:\n            return subprocess.check_output(f\"launchctl load {label}\", shell=True).decode().strip().split(\":\")[-1].strip()\n        except subprocess.CalledProcessError as e:\n            logger.error(f\"Failed to get service path for label '{label}': {e}\")\n            raise ServiceManagerError(f\"Failed to get service path for label '{label}'\") from e\n\n    def load_services(self):\n        try:\n            self._get_launchctl_list()\n            with concurrent.futures.ThreadPoolExecutor() as executor:\n                futures = {executor.submit(self._process_service, label, Service(label, -1, \"\")) for label in self.services.keys()}\n                for future in concurrent.futures.as_completed(futures):\n                    future.result()\n        except Exception as e:\n            logger.error(f\"Failed to load services: {e}\")\n            raise ServiceManagerError(\"Failed to load services\") from e\n\n    def _process_service(self, label: str, service: Service) -> None:\n        try:\n            path = self._get_service_path(label)\n            if not path:\n                return\n\n            service.path = path\n\n            metadata = {\n                \"label\": label,\n                \"path\": path,\n            }\n            service.metadata = metadata\n\n            text = f\"{metadata['label']} {path} {' '.join(self._get_dyld_dependencies(path))}\"\n            embedding = self.embedder.encode([text])[0].tolist()\n            service.set_embedding(embedding)\n\n            self.vector_db_manager.save([text], [metadata])\n        except Exception as e:\n            logger.error(f\"Failed to process service {label}: {e}\")\n            raise ServiceManagerError(f\"Failed to process service {label}\") from e\n\n    def _get_dyld_dependencies(self, path: str) -> List[str]:\n        try:\n            output = subprocess.check_output(f\"otool -L '{path}'\", shell=True).decode().split(\"\\n\")[1:-1]\n            return [line.split()[-2] for line in output]\n        except (subprocess.CalledProcessError, IndexError) as e:\n            logger.error(f\"Failed to get dyld dependencies for path '{path}': {e}\")\n            raise ServiceManagerError(f\"Failed to get dyld dependencies for path '{path}'\") from e\n\n    def identify_non_standards(self):\n        try:\n            standard_services = self._get_standard_services()\n            non_std_services = [label for label in self.services.keys() if label not in standard_services]\n            for label in non_std_services:\n                logger.warning(f\"Non-standard service found: {label}\")\n        except Exception as e:\n            logger.error(f\"Failed to identify non-standard services: {e}\")\n            raise ServiceManagerError(\"Failed to identify non-standard services\") from e\n\n    def _get_standard_services(self) -> List[str]:\n        \"\"\"\n        Currently we are working in hostile until proven can behave mindset\n        We need to log the behavior of a process. Is it visiting alot of other threads?\n        Does it offer generic symbolesa referencing weakrefs on bound objects with a wrapping/contexst\n        pattern? If so, we want to keep a threat watch list ;\n        :return:\n        \"\"\"\n        return [\"com.apple.*.plist\"]\n\n    def monitor_services(self):\n        while True:\n            try:\n                self.load_services()\n                self.identify_non_standards()\n            except Exception as e:\n                logger.error(f\"Failed to monitor services: {e}\")\n                raise ServiceManagerError(\"Failed to monitor services\") from e\n            time.sleep(60)  # Monitor every minute (adjust as needed)\n\n   async def search_services(self, query: str) -> List[Dict[str, Any]]:\n        try:\n            results = self.vector_db_manager.memory.search([query], top_n=50, unique=True, batch_results=\"diverse\")\n            return [result['metadata'] for result in results]\n        except Exception as e:\n            logger.error(f\"Failed to search services: {e}\")\n            raise ServiceManagerError(\"Failed to search services\") from e\n",
+      "info": {
+        "size": 6016,
+        "last_modified": "2025-01-31T03:07:17.984637",
+        "mime_type": "text/x-python",
+        "extension": ".py"
+      }
+    }
+  ]
+}

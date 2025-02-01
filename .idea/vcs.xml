@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../8QE1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../AlphaWeb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../obsverver-core" vcs="Git" />
+  </component>
+</project>
