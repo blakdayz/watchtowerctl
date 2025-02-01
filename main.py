@@ -4,7 +4,7 @@ from models.reinforcement_learning import RLModel
 from utils import EncryptionService, CommandExecutor, load_yara_rules
 from event_bus import EventBus
 
-def main():
+def main(state_space=None, action_space=None):
     with open("config/config.yaml", "r") as f:
         config = yaml.safe_load(f)
 

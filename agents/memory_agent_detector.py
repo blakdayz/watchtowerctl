@@ -1,17 +1,76 @@
 import os
 import re
 import asyncio
+import zope.security.examples.sandbox
 from typing import List, Dict, Any
 import psutil
 import yara
 
+from agents.agent_base import Agent
+
 
 class MemoryAgentDetectionError(Exception):
-    pass
+    """
+    Exception raised when memory agent detection fails
 
 
 
-class MemoryAgentDetector:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    """
+
+
+
+class MemoryInterviewAgent(Agent, zope.security.examples.sandbox.Agent):
     """
     Detects inject runtime agents in proccesses
     """

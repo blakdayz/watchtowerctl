@@ -1,6 +1,6 @@
 from .base_thread_container import monitor_object_access
 from agents.memory_agent_detector import MemoryAgentDetector
-from .sample_container import SampleContainer
+from sample_container import SampleContainer
 
 class ContainerizedProcess:
     def __init__(self):
@@ -12,7 +12,7 @@ import weakref, ThreadNetwork, Network
 
 class ContainerizedThreadNetwork(ThreadNetwork.ThreadNetwork):
     def __init__(self):
-
+        ThreadNetwork.__init__(self)
         self.container = SampleContainer()
         self.container['detector'] = self.detector
         self.container['network'] = Network()
