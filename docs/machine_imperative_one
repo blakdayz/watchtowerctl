@@ -1,0 +1,60 @@
+**Workflow for In-Memory Active Incident Response Agents**
+
+**Objective:** To develop a subsystem within an existing macOS incident response system that focuses on analyzing memory-resident artifacts and processes, ensuring system availability, denying malicious actors control over input/output (I/O) operations, and maintaining peace and stability.
+
+**Subsystem Name:** Memory Analysis & Intrusion Prevention (MAIP)
+
+**Components:**
+
+1. **Memory Analyzer**
+   - *Responsibilities:* Monitor running processes' memory usage, identify suspicious activities, and collect relevant artifacts for analysis.
+   - *Input:* Process ID (PID), process name, memory consumption data, memory access patterns.
+   - *Output:* Memory artifact reports, potential threat indications.
+
+2. **Intrusion Prevention Agent**
+   - *Responsibilities:* Intervene in malicious processes, copy their state into a vectorized format for further analysis, and work together to delete the root cause of infections.
+   - *Input:* Suspicious process ID (PID), memory artifacts, threat indicators.
+   - *Output:* Vectorized memory states, cleaned memory artifacts.
+
+3. **Vector Database (Milvus)**
+   - *Responsibilities:* Store vectorized memory states, enabling efficient search and comparison of malicious activities across time.
+   - *Input:* Vectorized memory states from Intrusion Prevention Agent.
+   - *Output:* Similarity scores, related memory states based on queries.
+
+4. **Retrieval-Augmented Generation (RAG) Pipeline**
+   - *Responsibilities:* Generate step-by-step guides for safe tool usage and artifact analysis using relevant man pages.
+   - *Input:* User queries, guidance needs (e.g., safe removal, quarantine, investigation).
+   - *Output:* Step-by-step guides, investigation artifacts.
+
+**Workflow:**
+
+1. **Monitor Running Processes**
+   - Continuously monitor running processes' memory usage and behavior using the Memory Analyzer.
+   - When a process exhibits suspicious activity or consumes excessive memory, trigger further analysis.
+
+2. **Collect Relevant Artifacts**
+   - Gather memory access patterns, memory consumption data, and other relevant artifacts for the suspected process.
+   - Store these artifacts in a structured format (e.g., Pydantic models) for easy reference.
+
+3. **Perform Intrusive Analysis**
+   - Utilize the Intrusion Prevention Agent to inject into suspicious processes without user intervention or reason.
+   - Copy the state of the target object into a vectorized and trimmed frequency graph of vectors in memory.
+   - Collaborate with other agents to delete the root cause of the infection.
+
+4. **Store Vectorized Memory States**
+   - Transfer the vectorized memory states to the Vector Database (Milvus) for efficient storage and search.
+   - Update the database periodically to maintain an up-to-date record of malicious activities.
+
+5. **Generate Investigation Artifacts**
+   - Employ the RAG pipeline to generate step-by-step guides on how to safely remove, quarantine, or investigate artifacts related to macOS services using relevant tools and man pages.
+   - Produce investigation artifacts based on user queries and guidance needs.
+
+6. **Perform Root Cause Analysis**
+   - Analyze the collected memory artifacts and generated investigation artifacts to determine the root cause of the infection.
+   - Document findings and collaborate with other agents to delete the offending root cause.
+
+7. **Maintain System Availability & Deny Malicious Actors Control**
+   - Coordinate with other incident response agents to ensure system availability, stability, and peace.
+   - Implement strategies aligned with the side of peace and stability, preventing malicious actors from gaining control over I/O operations.
+
+By following this research workflow, you can develop an efficient and effective in-memory active incident response subsystem for macOS. This subsystem focuses on maintaining system availability, denying malicious actors control, and promoting a peaceful and stable user environment.

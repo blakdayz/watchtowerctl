@@ -65,19 +65,17 @@ class MemoryAgentDetectionError(Exception):
 
 
 
-
     """
-
 
 
 class MemoryInterviewAgent(Agent, zope.security.examples.sandbox.Agent):
     """
     Detects inject runtime agents in proccesses
     """
+
     def __init__(self, yara_rules_path: str):
         self.yara_rules = yara.compile(filepath=yara_rules_path)
         self.processes = psutil.process_iter()
-
 
     async def scan_memory(self, process: psutil.Process) -> List[Dict[str, Any]]:
         try:
@@ -95,7 +93,7 @@ class MemoryInterviewAgent(Agent, zope.security.examples.sandbox.Agent):
                     "pid": process.pid,
                     "label": match.string,
                     "score": match.confidence,
-                    "offsets": [offset.address for offset in match.offsets]
+                    "offsets": [offset.address for offset in match.offsets],
                 }
                 results.append(result)
 
@@ -123,13 +121,19 @@ class MemoryInterviewAgent(Agent, zope.security.examples.sandbox.Agent):
                     try:
                         # Check if the file descriptor is a network socket
                         if fd.path.endswith((".sock", ".so", ".dll")):
-                            network_listeners.append({
-                                "process": process_name,
-                                "fd": fd.path,
-                                "type": "listener"
-                            })
+                            network_listeners.append(
+                                {
+                                    "process": process_name,
+                                    "fd": fd.path,
+                                    "type": "listener",
+                                }
+                            )
 
-                    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                    except (
+                        psutil.NoSuchProcess,
+                        psutil.AccessDenied,
+                        psutil.ZombieProcess,
+                    ):
                         continue
 
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):

@@ -13,7 +13,7 @@ class ThreadAcquisitionProxy(ContainedProxy):
         self.__thread_local = ThreadLocalContainer()
 
     def __getattr__(self, name):
-        if name in ('__parent__', '__name__'):
+        if name in ("__parent__", "__name__"):
             return getattr(self._wrapped, name)
         elif hasattr(self, name):
             return getattr(self, name)
@@ -21,33 +21,36 @@ class ThreadAcquisitionProxy(ContainedProxy):
             try:
                 return getattr(self._wrapped, name)
             except AttributeError:
-                raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+                raise AttributeError(
+                    f"'{self.__class__.__name__}' object has no attribute '{name}'"
+                )
 
     def __setattr__(self, name, value):
         """
-        Sets 
+        Sets
         :param name:
         :param value:
         :return:
         """
-        if name in ('__parent__', '__name__'):
+        if name in ("__parent__", "__name__"):
             setattr(self._wrappxed, name, value)
-        elif hasattr(self, name) or not name.startswith('__'):
+        elif hasattr(self, name) or not name.startswith("__"):
             super().__setattr__(name, value)
         else:
             setattr(self._wrapped, name, value)
 
     def __delattr__(self, name):
-        if name in ('__parent__', '__name__'):
+        if name in ("__parent__", "__name__"):
             delattr(self._wrapped, name)
-        elif hasattr(self, name) or not name.startswith('__'):
+        elif hasattr(self, name) or not name.startswith("__"):
             super().__delattr__(name)
         else:
             delattr(self._wrapped, name)
 
     def __dir__(self):
-        return [attr for attr in super().__dir__()
-                if not attr.startswith('__')] + list(self.__thread_local.keys())
+        return [attr for attr in super().__dir__() if not attr.startswith("__")] + list(
+            self.__thread_local.keys()
+        )
 
     def __getitem__(self, key):
         return self.__thread_local[key]

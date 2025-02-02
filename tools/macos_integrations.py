@@ -3,13 +3,20 @@ import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+
+class ThreatLevel:
+    pass
+
+
 class MacOSMonitoringHandler(FileSystemEventHandler):
     def __init__(self, threat_level_event_bus):
         self.threat_level_event_bus = threat_level_event_bus
 
     def on_modified(self, event):
         if not self.is_safe_modification(event):
-            self.threat_level_event_bus.publish("THREAT_LEVEL_CHANGE", ThreatLevel.MEDIUM)
+            self.threat_level_event_bus.publish(
+                "THREAT_LEVEL_CHANGE", ThreatLevel.MEDIUM
+            )
 
     def is_safe_modification(self, event):
         """
@@ -23,7 +30,7 @@ class MacOSMonitoringHandler(FileSystemEventHandler):
         if event.src_path.endswith(".exe"):
             return False
         if event.src_path.endswith(".exe"):
-
+            return True
 
 
 def monitor_application_directories(app_dirs: List[str], threat_level_event_bus):
@@ -31,7 +38,9 @@ def monitor_application_directories(app_dirs: List[str], threat_level_event_bus)
     observer = Observer()
 
     for app_dir in app_dirs:
-        path = os.path.expanduser(os.path.join("~", "Library", "Application Support", app_dir))
+        path = os.path.expanduser(
+            os.path.join("~", "Library", "Application Support", app_dir)
+        )
         observer.schedule(event_handler, path=path, recursive=True)
 
     observer.start()

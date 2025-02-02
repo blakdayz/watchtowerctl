@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+
 class ProcessInfo(BaseModel):
     command: str
     pid: int
@@ -15,6 +16,7 @@ class ProcessInfo(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class LsofOutput(BaseModel):
     entries: list[ProcessInfo]

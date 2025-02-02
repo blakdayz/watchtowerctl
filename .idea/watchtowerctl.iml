@@ -8,6 +8,7 @@
     <orderEntry type="module" module-name="Quateria" />
     <orderEntry type="module" module-name="AlphaWeb" />
     <orderEntry type="module" module-name="qet" />
+    <orderEntry type="module" module-name="Thoughts" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />

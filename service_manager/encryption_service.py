@@ -1,6 +1,7 @@
 import os
 from cryptography.fernet import Fernet, InvalidToken
 
+
 class EncryptionService:
     def __init__(self, encryption_key: str):
         self.key = Fernet(encryption_key)

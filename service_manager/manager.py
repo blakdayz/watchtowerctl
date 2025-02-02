@@ -16,7 +16,7 @@ logging.config.fileConfig("service_manager/logging.conf", disable_existing_logge
 logger = logging.getLogger("service_manager")
 
 from .output_models import ServiceMetadata, InvestigationArtifact
-from sandbox import
+from sandbox import Sandbox
 from search import SearchManager
 from utils import init_sentence_transformer_model
 from vectordb_manager import VectorDBManager
@@ -32,6 +32,11 @@ class Service:
 
     def set_embedding(self, embedding: List[float]):
         self.embedding = embedding
+
+
+class ManPageRetriever:
+    pass
+
 
 class LaunchctlManager:
     def __init__(self, config: tuple):

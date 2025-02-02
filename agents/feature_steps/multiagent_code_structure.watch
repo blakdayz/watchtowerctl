@@ -1,0 +1,5 @@
+memory = [user_defined_task]
+while llm_should_continue(memory): # this loop is the multi-step part
+    action = llm_get_next_action(memory) # this is the tool-calling part
+    observations = execute_action(action)
+    memory += [action, observations]

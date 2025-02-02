@@ -1,9 +1,11 @@
 from typing import List, Union, Dict, Any
 from pydantic import BaseModel
 
+
 class InfoDict(BaseModel):
     key: str
     value: Union[str, int, float]
+
 
 class PathInfo(BaseModel):
     path: str
@@ -12,10 +14,12 @@ class PathInfo(BaseModel):
     dev_major: Union[int, None] = None
     dev_minor: Union[int, None] = None
 
+
 class FDInfo(BaseModel):
     fd: int
     type: str
     path_info: PathInfo
+
 
 class ProcessInfo(BaseModel):
     pid: int
@@ -37,6 +41,7 @@ class ProcessInfo(BaseModel):
     threads: int
     info_dicts: List[InfoDict] = []
 
+
 def parse_procinfo_output(lines: list) -> ProcessInfo:
     """
     Run p
@@ -57,18 +62,34 @@ def parse_procinfo_output(lines: list) -> ProcessInfo:
     env_lines = lines[-4].splitlines()
     memmap_lines = lines[-3:-2][0].splitlines()
 
-    result.environment_variables = {line.split("=", 1)[0]: line.split("=", 1)[1] for line in env_lines if "=" in line}
+    result.environment_variables = {
+        line.split("=", 1)[0]: line.split("=", 1)[1]
+        for line in env_lines
+        if "=" in line
+    }
     result.memory_maps = [dict(line.split(maxsplit=1)) for line in memmap_lines]
 
     # Extract FD info and path info
     fds_lines = lines[-2].splitlines()
     for fd_line in fds_lines:
-        fd_info = FDInfo(fd=int(fd_line.split()[0]), type=" ".join(fd_line.split()[1:-4]))
-        path_info = PathInfo(**{k: v for k, v in zip("path mode dev_major dev_minor".split(), fd_line.split())[4:]})
+        fd_info = FDInfo(
+            fd=int(fd_line.split()[0]), type=" ".join(fd_line.split()[1:-4])
+        )
+        path_info = PathInfo(
+            **{
+                k: v
+                for k, v in zip(
+                    "path mode dev_major dev_minor".split(), fd_line.split()
+                )[4:]
+            }
+        )
 
         result.fds.append(FDInfo(fd=fd_info.fd, type=fd_info.type, path_info=path_info))
 
     # Extract info_dicts
-    result.info_dicts = [InfoDict(key=k, value=v) for k, v in zip(*map(lambda x: x.split(":", 1), lines[-5].split()))]
+    result.info_dicts = [
+        InfoDict(key=k, value=v)
+        for k, v in zip(*map(lambda x: x.split(":", 1), lines[-5].split()))
+    ]
 
     return result

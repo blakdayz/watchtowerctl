@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class MilvusConfig:
     host: str
@@ -7,8 +8,10 @@ class MilvusConfig:
     collection_name: str
     dim: int
 
+
 ServiceMetadataFields = ["label", "path"]
 InvestigationArtifactTypes = ["custom_instruction"]
+
 
 @dataclass
 class VectorDBConfig:

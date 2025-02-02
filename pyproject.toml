@@ -7,11 +7,15 @@ authors = [
 
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python =  ">=3.13,<4.0"
 dependencies = [
     "scikit-learn (>=1.6.1,<2.0.0)",
     "pyobjc (>=11.0,<12.0)",
-    "yara (>=1.7.7,<2.0.0)"
+    "yara (>=1.7.7,<2.0.0)",
+    "sentence-transformers (>=3.4.1,<4.0.0)",
+    "pydantic-ai (>=0.0.21,<0.0.22)",
+    "pyto (>=0.0.1,<0.0.2)",
+    "behave (>=1.2.6,<2.0.0)"
 ]
 
 

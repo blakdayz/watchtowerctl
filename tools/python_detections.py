@@ -12,8 +12,13 @@ def get_python_site_packages():
     :return:
     """
 
+
 def get_pip_site_packages():
-    return [os.path.join(user_site, "lib", "pythonX.Y", "site-packages") for user_site in get_python_site_packages()]
+    return [
+        os.path.join(user_site, "lib", "pythonX.Y", "site-packages")
+        for user_site in get_python_site_packages()
+    ]
+
 
 def scan_for_malicious_packages(site_packages: List[str], yara_rules):
     malicious_packages = []
@@ -27,7 +32,10 @@ def scan_for_malicious_packages(site_packages: List[str], yara_rules):
 
     return malicious_packages
 
-def check_for_malicious_pip_load(yara_rules: List[Rule], threat_level_event_bus: EventBus):
+
+def check_for_malicious_pip_load(
+    yara_rules: List[Rule], threat_level_event_bus: EventBus
+):
     site_packages = get_pip_site_packages()
     malicious_packages = scan_for_malicious_packages(site_packages, yara_rules)
 

@@ -6,7 +6,8 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from jinja2 import Environment, FileSystemLoader
-from .models import ProcessInfo, FDInfo, PathInfo, NetworkConnection, ArtifactInfo
+from models.procinfo import ProcessInfo, FDInfo, PathInfo, ArtifactInfo
+
 
 class AgentBase(ABC):
     @abstractmethod
@@ -14,15 +15,21 @@ class AgentBase(ABC):
         pass
 
     @abstractmethod
-    def run_socat_dump_comms(self, network_connections: List[NetworkConnection]) -> None:
+    def run_socat_dump_comms(
+        self, network_connections: List[NetworkConnection]
+    ) -> None:
         pass
 
     @abstractmethod
-    def run_socat_sinkhole_comms(self, network_connections: List[NetworkConnection]) -> None:
+    def run_socat_sinkhole_comms(
+        self, network_connections: List[NetworkConnection]
+    ) -> None:
         pass
 
     @abstractmethod
-    def gather_artifacts(self, process_info: ProcessInfo, network_connections: List[NetworkConnection]) -> ArtifactInfo:
+    def gather_artifacts(
+        self, process_info: ProcessInfo, network_connections: List[NetworkConnection]
+    ) -> ArtifactInfo:
         pass
 
     @abstractmethod

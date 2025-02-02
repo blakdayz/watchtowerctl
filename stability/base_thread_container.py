@@ -8,30 +8,38 @@ def _monitored_get__(self):
     print(f"Accessing object {id(self._wrapped)} ({type(self._wrapped).__name__})")
     return self._get_wrapped().__get__(self)
 
+
 def _monitored_set__(self, value):
     # Log setting of the object's attribute and set the wrapped object's attribute accordingly
-    print(f"Setting object {id(self._wrapped)} ({type(self._wrapped).__name__}) to {value}")
+    print(
+        f"Setting object {id(self._wrapped)} ({type(self._wrapped).__name__}) to {value}"
+    )
     self._get_wrapped().__set__(self, value)
+
 
 def monitor_object_access(obj):
     """Wrap an object with a proxy that monitors `__get__` and `__set__` attributes."""
-    if isinstance(obj, types.BuiltinFunctionType) or not hasattr(obj, '__get__'):
+    if isinstance(obj, types.BuiltinFunctionType) or not hasattr(obj, "__get__"):
         return obj
 
-    wrapped_obj = obj._wrapped if hasattr(obj, '_wrapped') else obj
-    new_proxy = type(obj.__class__.__name__, (), {
-        **vars(obj),
-        '__get__': _monitored_get__,
-        '__set__': _monitored_set__,
-        '_wrapped': wrapped_obj,
-        '_get_wrapped': getattr(wrapped_obj, '__get__', lambda: obj)
-    })
+    wrapped_obj = obj._wrapped if hasattr(obj, "_wrapped") else obj
+    new_proxy = type(
+        obj.__class__.__name__,
+        (),
+        {
+            **vars(obj),
+            "__get__": _monitored_get__,
+            "__set__": _monitored_set__,
+            "_wrapped": wrapped_obj,
+            "_get_wrapped": getattr(wrapped_obj, "__get__", lambda: obj),
+        },
+    )
 
     return new_proxy()
 
 
-
 import weakref
+
 
 class ContainerController:
     def __init__(self, container):
@@ -44,7 +52,7 @@ class ContainerController:
 
     def _unwrap_object(self, obj):
         """Unwrap an object from the observer pattern if it was previously wrapped."""
-        if hasattr(obj, '_wrapped'):
+        if hasattr(obj, "_wrapped"):
             return obj._wrapped
         return obj
 
@@ -89,7 +97,6 @@ class ContainerController:
             self.controlled_objects.remove(key)
 
 
-
 def main():
     container = SampleContainer()
     controller = ContainerController(container)
@@ -107,6 +114,7 @@ def main():
     # Release control of the objects
     controller.release_control(obj1, obj2)
     print(f"{container[1]} {container['obj2']}")
+
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 import configparser
 
+
 def get_config():
     config = configparser.ConfigParser()
     config.read("service_manager/config.ini")
@@ -8,7 +9,7 @@ def get_config():
         host=config.get("milvus", "host"),
         port=int(config.get("milvus", "port")),
         collection_name=config.get("milvus", "collection_name"),
-        dim=int(config.get("milvus", "dim"))
+        dim=int(config.get("milvus", "dim")),
     )
 
     llm_model = config.get("llama_index", "model")

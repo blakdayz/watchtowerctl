@@ -1,6 +1,7 @@
 import yara
 from models.event_bus import EventBus
 
+
 def load_yara_rules(rule_path: str, event_bus: EventBus):
     rules = []
 

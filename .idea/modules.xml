@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../AlphaWeb/.idea/AlphaWeb.iml" filepath="$PROJECT_DIR$/../AlphaWeb/.idea/AlphaWeb.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Quateria-master/.idea/Quateria.iml" filepath="$PROJECT_DIR$/../Quateria-master/.idea/Quateria.iml" />
+      <module fileurl="file:///Volumes/Y - Data/Previous Content/Users/o.o/PycharmProjects/Thoughts/.idea/Thoughts.iml" filepath="/Volumes/Y - Data/Previous Content/Users/o.o/PycharmProjects/Thoughts/.idea/Thoughts.iml" />
       <module fileurl="file://$PROJECT_DIR$/../obsverver-core/.idea/obsverver-core.iml" filepath="$PROJECT_DIR$/../obsverver-core/.idea/obsverver-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/../8QE1/.idea/qet.iml" filepath="$PROJECT_DIR$/../8QE1/.idea/qet.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/watchtowerctl.iml" filepath="$PROJECT_DIR$/.idea/watchtowerctl.iml" />

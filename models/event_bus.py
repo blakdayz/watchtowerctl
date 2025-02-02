@@ -1,6 +1,7 @@
 from collections import defaultdict
 from enum import Enum
 
+
 class EventBus:
     def __init__(self):
         self.subscribers = defaultdict(list)
@@ -11,6 +12,7 @@ class EventBus:
     def publish(self, event_type: str, *args, **kwargs):
         for callback in self.subscribers.get(event_type, []):
             callback(*args, **kwargs)
+
 
 class EventType(str, Enum):
     PROCESS_INFO_UPDATED = "PROCESS_INFO_UPDATED"
@@ -26,6 +28,3 @@ class Action(Enum):
     KILL_PROCESS = "KILL_PROCESS"
     SOCAT_DUMP = "SOCAT_DUMP"
     SOCAT_SINKHOLE = "SOCAT_SINKHOLE"
-
-
-

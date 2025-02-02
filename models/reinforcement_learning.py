@@ -5,6 +5,7 @@ from stable_baselines3.common.policies import MultiInputActorCriticPolicy
 from stable_baselines3.common.vec_env import DummyVecEnv
 from typing import Optional, Union
 
+
 class RLModel:
     def __init__(
         self,
@@ -35,13 +36,27 @@ class RLModel:
         )
         self.action_space = action_space
         self.observation_space = state_space
-        self.env = DummyVecEnv([lambda:
-                                (np.random.randint(0, high=self.observation_space["n_agents"],
-                                                   size=(1,)) for _ in range(n_steps))])
+        self.env = DummyVecEnv(
+            [
+                lambda: (
+                    np.random.randint(
+                        0, high=self.observation_space["n_agents"], size=(1,)
+                    )
+                    for _ in range(n_steps)
+                )
+            ]
+        )
 
     def learn_from_experience(self, experiences):
         observations, rewards, actions, next_obs, dones = experiences
-        self.model.learn(transition_dict={"fwd": observations, "a": actions.squeeze(), "r": rewards, "nb": next_obs})
+        self.model.learn(
+            transition_dict={
+                "fwd": observations,
+                "a": actions.squeeze(),
+                "r": rewards,
+                "nb": next_obs,
+            }
+        )
 
     def predict(self, observation):
         return self.model.predict(observation)
@@ -52,8 +67,10 @@ class RLModel:
 
     @property
     def action_space_shape(self) -> tuple:
-        return (self.action_space["n_actions"], )
+        return (self.action_space["n_actions"],)
 
     @property
     def observation_space_shape(self) -> tuple:
-        return self.observation_space["n_agents"] * (self.observation_space["n_continuous_state_features"], )
+        return self.observation_space["n_agents"] * (
+            self.observation_space["n_continuous_state_features"],
+        )

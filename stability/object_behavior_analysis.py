@@ -14,6 +14,7 @@ from sample_container import SampleContainer
 
 T = TypeVar("T")
 
+
 class ObjectBehaviorEvent(Generic[T]):
     def __init__(self, obj: T):
         self.obj = obj
@@ -26,13 +27,12 @@ class ObjectStructureChangedEvent(ObjectBehaviorEvent):
     """
     Emits the object structure changed.
     """
+
     def __init__(self, obj: T):
         super().__init__(obj)
 
     def get_object(self) -> T:
         return self.obj
-
-
 
 
 def _emit_object_structural_change_event(event):
@@ -83,7 +83,7 @@ def _wrap_attribute_with_event_emitter(obj: Any, attr: Callable) -> Awaitable[An
         obj.__class__,
         attr.__name__,
         args=attr.__defaults__,
-        closure=attr.__closure__
+        closure=attr.__closure__,
     )
 
 
@@ -91,7 +91,7 @@ async def _monitor_object(obj: Any) -> None:
     wrapped_obj = ThreadAcquisitionProxy(obj)
 
     for attr_name in dir(wrapped_obj):
-        if not attr_name.startswith('__'):
+        if not attr_name.startswith("__"):
             continue
 
         attr = getattr(wrapped_obj, attr_name)
@@ -102,7 +102,7 @@ async def _monitor_object(obj: Any) -> None:
             setattr(wrapped_obj, attr_name, async_attr)
 
     for attr_name in dir(obj):
-        if not attr_name.startswith('__'):
+        if not attr_name.startswith("__"):
             continue
 
         attr = getattr(obj, attr_name)
@@ -125,6 +125,7 @@ class ObjectControlGraph(Generic[T], metaclass=final):
     a command and control, behavior learning reinforcement model that is zero shots and you can know and adapt to
     any other memory basis and control it through Hilbert-Hilbert ratcheting
     """
+
     def __init__(self, container: SampleContainer[T]):
         self.container = container
         self.controller = ContainerController(container)
@@ -135,11 +136,13 @@ class ObjectControlGraph(Generic[T], metaclass=final):
 
     async def _emit_object_behavior_event(self, event: ObjectBehaviorEvent[T]) -> None:
         """Emit an object behavior event."""
-        await self._add_graph_edge(event.obj.id, 'behaves_like', event.obj)
+        await self._add_graph_edge(event.obj.id, "behaves_like", event.obj)
 
-    async def _emit_object_structural_change_event(self, event: ObjectStructureChangedEvent) -> None:
+    async def _emit_object_structural_change_event(
+        self, event: ObjectStructureChangedEvent
+    ) -> None:
         """Emit an object structural change event."""
-        await self._add_graph_edge(event.obj.id, 'changed_structure_of', event.obj)
+        await self._add_graph_edge(event.obj.id, "changed_structure_of", event.obj)
 
     def _add_graph_edge(self, node_id: Any, edge_type: str, neighbor_id: Any) -> None:
         if node_id not in self.graph:
@@ -153,15 +156,15 @@ class ObjectControlGraph(Generic[T], metaclass=final):
 
         # Check for listening sockets in the object or its descendants
         if self._has_listening_socket(obj):
-            malicious_activity['listening_socket'] = {
-                'description': "The object is associated with a listening socket.",
-                'socket_path': _get_listening_socket_path(obj),
+            malicious_activity["listening_socket"] = {
+                "description": "The object is associated with a listening socket.",
+                "socket_path": _get_listening_socket_path(obj),
             }
 
         # Check for other proxy-like activity (e.g., network communication, file access)
         if await self._is_proxy_like_activity_present(obj):
-            malicious_activity['proxy_like_activity'] = {
-                'description': "The object exhibits behavior consistent with a proxy or Trojan horse.",
+            malicious_activity["proxy_like_activity"] = {
+                "description": "The object exhibits behavior consistent with a proxy or Trojan horse.",
             }
 
         return malicious_activity
@@ -171,21 +174,21 @@ class ObjectControlGraph(Generic[T], metaclass=final):
         """Check if the object is associated with a listening socket."""
         # Implement logic to check for listening sockets using psutil or other libraries
         # For now, let's assume that the presence of an attribute starting with 'socket_' indicates a listening socket
-        return any(attr.startswith('socket_') for attr in dir(obj))
+        return any(attr.startswith("socket_") for attr in dir(obj))
 
     @staticmethod
     async def _get_listening_socket_path(obj: T) -> str:
         """Get the path to the listening socket associated with the object."""
         # Implement logic to find the path to the listening socket using psutil or other libraries
         # For now, let's assume that the attribute 'socket_path' contains the socket path
-        return getattr(obj, 'socket_path', "Unknown")
+        return getattr(obj, "socket_path", "Unknown")
 
     @staticmethod
     async def _is_proxy_like_activity_present(obj: T) -> bool:
         """Check if the object exhibits behavior consistent with a proxy or Trojan horse."""
         # Implement logic to detect proxy-like activity using dynamic imports and runtime type checking
         # For now, let's assume that the presence of an attribute 'network_communication' or 'file_access' indicates proxy-like activity
-        return hasattr(obj, 'network_communication') or hasattr(obj, 'file_access')
+        return hasattr(obj, "network_communication") or hasattr(obj, "file_access")
 
     def control_objects(self, *objects: Any) -> None:
         """

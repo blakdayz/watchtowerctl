@@ -12,20 +12,21 @@ from stability.thread_acquisition_proxy import ThreadAcquisitionProxy
 from stability.base_thread_container import ContainerController
 
 
-
 from zope.interface import implementer
 
 
 from thread_acquisition_proxy import ThreadAcquisitionProxy
 
+
 class ContainmentStatus(Enum):
     CONTAINED = 1
     UNCONTAINED = 2
     IN_CONTROL = 3
-    GB_COLLECTED =4
+    GB_COLLECTED = 4
+
 
 class IContainer:
-    status: ContainmentStatus # = ContainmentStatus.CONTAINED
+    status: ContainmentStatus  # = ContainmentStatus.CONTAINED
 
 
 @implementer(IContainer)
@@ -65,7 +66,6 @@ class ObjectStructureChangedEvent(ObjectBehaviorEvent):
     pass
 
 
-
 class ObjectControlManager:
 
     def __init__(self, container: SampleContainer):
@@ -81,7 +81,7 @@ class ObjectControlManager:
 
         # Monitor object behavior events (e.g., attribute access and modification)
         for attr_name in dir(wrapped_obj):
-            if not attr_name.startswith('__'):
+            if not attr_name.startswith("__"):
                 continue
 
             attr = getattr(wrapped_obj, attr_name)
@@ -94,7 +94,7 @@ class ObjectControlManager:
 
         # Monitor object structural changes (e.g., attribute addition and removal)
         for attr_name in dir(obj):
-            if not attr_name.startswith('__'):
+            if not attr_name.startswith("__"):
                 continue
 
             attr = getattr(obj, attr_name)
@@ -127,7 +127,7 @@ class ObjectControlManager:
             obj.__class__,
             attr.__name__,
             args=attr.__,
-            closure=attr.__closure__
+            closure=attr.__closure__,
         )
 
     def _add_structural_change_event_listener(self, obj: Any, attr_name: str) -> None:
@@ -142,7 +142,9 @@ class ObjectControlManager:
         setattr(
             obj,
             attr_name,
-            types.MethodType(structural_change_event_listener, obj.__class__, attr_name),
+            types.MethodType(
+                structural_change_event_listener, obj.__class__, attr_name
+            ),
         )
 
     def _add_object_to_graph(self, obj: Any) -> None:
@@ -158,17 +160,19 @@ class ObjectControlManager:
 
     def _add_object_id_and_structural_properties(self, obj: Any) -> None:
         """Add an object's ID and structural properties (e.g., binary location on disk) to the control graph."""
-        if not hasattr(obj, 'id'):
-            setattr(obj, 'id', id(obj))
+        if not hasattr(obj, "id"):
+            setattr(obj, "id", id(obj))
 
         # Add other structural properties as needed
-        self._add_object_structural_property(obj, 'binary_location_on_disk', obj.__file__)
+        self._add_object_structural_property(
+            obj, "binary_location_on_disk", obj.__file__
+        )
 
     def _add_object_behavior_events_to_graph(self, obj: Any) -> None:
         """Add an object's behavior events (e.g., attribute access and modification) to the control graph."""
         # Add event listeners for object behavior events
         for attr_name in dir(obj):
-            if not attr_name.startswith('__'):
+            if not attr_name.startswith("__"):
                 continue
 
             attr = getattr(obj, attr_name)
@@ -199,12 +203,14 @@ class ObjectControlManager:
     async def _emit_object_behavior_event(self, event: ObjectBehaviorEvent) -> None:
         """Emit an object behavior event."""
         # Add the event to the control graph
-        self._add_graph_edge(event.obj.id, 'behaves_like', event.obj)
+        self._add_graph_edge(event.obj.id, "behaves_like", event.obj)
 
-    async def _emit_object_structural_change_event(self, event: ObjectStructureChangedEvent) -> None:
+    async def _emit_object_structural_change_event(
+        self, event: ObjectStructureChangedEvent
+    ) -> None:
         """Emit an object structural change event."""
         # Add the event to the control graph
-        self._add_graph_edge(event.obj.id, 'changed_structure_of', event.obj)
+        self._add_graph_edge(event.obj.id, "changed_structure_of", event.obj)
 
     def _add_graph_edge(self, node_id: Any, edge_type: str, neighbor_id: Any) -> None:
         """Add an edge between two nodes in the control graph."""
